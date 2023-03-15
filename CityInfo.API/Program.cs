@@ -8,7 +8,8 @@ builder.Services.AddControllers(options =>
 {
     // Return status code if API consumer requests information in a format that is not currently supported
     options.ReturnHttpNotAcceptable = true;
-}).AddXmlDataContractSerializerFormatters(); // this adds XML input and output formatters
+}).AddNewtonsoftJson()
+  .AddXmlDataContractSerializerFormatters(); // this adds XML input and output formatters
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
