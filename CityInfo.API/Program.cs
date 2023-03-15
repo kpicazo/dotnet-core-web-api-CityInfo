@@ -1,11 +1,20 @@
 using Microsoft.AspNetCore.StaticFiles;
+using Serilog;
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.File("logs/cityinfo.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Logging.ClearProviders(); // clear all logging
-builder.Logging.AddConsole();
+//builder.Logging.ClearProviders(); // clear all logging
+//builder.Logging.AddConsole();
+
+builder.Host.UseSerilog();
 
 // Add services to the container.
-
 builder.Services.AddControllers(options =>
 {
     // Return status code if API consumer requests information in a format that is not currently supported
