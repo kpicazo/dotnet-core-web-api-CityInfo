@@ -7,7 +7,7 @@ namespace CityInfo.API
         public List<CityDto> Cities { get; set; }
 
         // Singleton pattern - this returns an instance of this class.
-        public static CitiesDataStore Current { get; } = new CitiesDataStore();
+        //public static CitiesDataStore Current { get; } = new CitiesDataStore();
 
         public CitiesDataStore()
         {
