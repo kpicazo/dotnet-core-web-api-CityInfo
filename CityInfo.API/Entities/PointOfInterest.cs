@@ -13,6 +13,9 @@ namespace CityInfo.API.Entities
         [MaxLength(50)]
         public string Name { get; set; }
 
+        [MaxLength(200)]
+        public string Description { get; set; }
+
         // Navigation property creates a relationship between entities.
         // A property is considered a navigation property if the type it points to cannot be mapped
         // as a scalar type by the current database provider.

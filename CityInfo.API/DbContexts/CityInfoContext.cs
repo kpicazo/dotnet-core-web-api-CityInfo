@@ -18,6 +18,7 @@ namespace CityInfo.API.DbContexts
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    optionsBuilder.UseSqlite("connectionstring");
+        //    SQLitePCL.raw.SetProvider();
         //    base.OnConfiguring(optionsBuilder);
         //}
 

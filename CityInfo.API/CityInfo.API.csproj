@@ -10,7 +10,11 @@
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="7.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.15" />
     <PackageReference Include="microsoft.entityframeworkcore" Version="6.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="serilog.sinks.console" Version="4.1.0" />
     <PackageReference Include="serilog.sinks.file" Version="5.0.0" />
