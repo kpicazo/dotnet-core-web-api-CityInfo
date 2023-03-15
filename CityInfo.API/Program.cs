@@ -44,6 +44,8 @@ builder.Services.AddDbContext<CityInfoContext>(
     dbContextOptions => dbContextOptions.UseSqlite(
         builder.Configuration["ConnectionStrings:CityInfoDBConnectionString"]));
 
+builder.Services.AddScoped<ICityInfoRepository, CityInfoRepository>();
+
 // Once services are added and/or configured, application can now be built:
 var app = builder.Build();
 
