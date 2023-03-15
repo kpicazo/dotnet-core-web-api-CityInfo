@@ -13,7 +13,7 @@ namespace CityInfo.API.Profiles
             // Occasionally we might have to provide our own property mappings but for a lot of objects,
             // this is sufficient.
             CreateMap<Entities.City, Models.CityWithoutPointsOfInterestDto>();
-
+            CreateMap<Entities.City, Models.CityDto>();
         }
     }
 }
