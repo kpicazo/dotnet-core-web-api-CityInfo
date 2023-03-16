@@ -78,6 +78,15 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddApiVersioning(setupAction =>
+{
+    // when true, API consumers will not need to specify API version in the URIs.
+    // the default version will be used.
+    setupAction.AssumeDefaultVersionWhenUnspecified = true;
+    setupAction.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    setupAction.ReportApiVersions = true;
+});
+
 // Once services are added and/or configured, application can now be built:
 var app = builder.Build();
 
