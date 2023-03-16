@@ -20,7 +20,7 @@ namespace CityInfo.API.Services
             return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
         }
 
-        public async Task<IEnumerable<City>> GetCitiesAsync(
+        public async Task<(IEnumerable<City>, PaginationMetadata)> GetCitiesAsync(
             string? name, string? searchQuery, int pageNumber, int pageSize)
         {
             // We want to build the query statement by statement and only execute what we need.
@@ -44,13 +44,18 @@ namespace CityInfo.API.Services
                                 || (a.Description != null && a.Description.Contains(searchQuery)));
             }
 
+            var totalItemCount = await collection.CountAsync();
+            var paginationMetadata = new PaginationMetadata(totalItemCount, pageSize, pageNumber);
+
             // This is where the query is executed as we are calling ToListAsync() which iterates over the collection
-            return await collection.OrderBy(c => c.Name)
+            var collectionToReturn = await collection.OrderBy(c => c.Name)
                 // Add paging just before iterating on the query.
                 // We want to page on the filtered, searched and ordered collection.
                 .Skip(pageSize * (pageNumber - 1)) 
                 .Take(pageSize)
                 .ToListAsync();
+
+            return (collectionToReturn, paginationMetadata);
         }
 
         public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest)
