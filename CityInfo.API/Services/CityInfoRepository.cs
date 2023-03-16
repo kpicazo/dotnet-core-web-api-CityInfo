@@ -62,6 +62,12 @@ namespace CityInfo.API.Services
             }
         }
 
+        // This is an in-memory operation so it does not need to be asynchronous.
+        public void DeletePointOfInterest(PointOfInterest pointOfInterest)
+        {
+            _context.PointsOfInterest.Remove(pointOfInterest);
+        }
+
         // This will save data to the actual database
         public async Task<bool> SaveChangesAsync()
         {
