@@ -20,19 +20,9 @@ namespace CityInfo.API.Services
             return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
         }
 
-        public async Task<IEnumerable<City>> GetCitiesAsync(string? name, string? searchQuery)
+        public async Task<IEnumerable<City>> GetCitiesAsync(
+            string? name, string? searchQuery, int pageNumber, int pageSize)
         {
-            // if no name or search query was passed in, just get all cities
-            if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(searchQuery))
-            {
-                return await GetCitiesAsync();
-            }
-
-            // we need to cover all the following scenarios:
-            // 1. apply only the name filter
-            // 2. apply only the search query
-            // 3. apply both the name filter and search query
-
             // We want to build the query statement by statement and only execute what we need.
             // First, initialize collection variable as IQueryable.
             // Note: This query variable stores COMMANDS and not results.
@@ -55,7 +45,12 @@ namespace CityInfo.API.Services
             }
 
             // This is where the query is executed as we are calling ToListAsync() which iterates over the collection
-            return await collection.OrderBy(c => c.Name).ToListAsync();
+            return await collection.OrderBy(c => c.Name)
+                // Add paging just before iterating on the query.
+                // We want to page on the filtered, searched and ordered collection.
+                .Skip(pageSize * (pageNumber - 1)) 
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest)
