@@ -4,6 +4,7 @@ using CityInfo.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
 using System.Text;
@@ -35,8 +36,34 @@ builder.Services.AddSwaggerGen(setupAction =>
 {
     var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
-
     setupAction.IncludeXmlComments(xmlCommentsFullPath);
+
+    setupAction.AddSecurityDefinition("CityInfoApiBearerAuth", new OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer", // case sensitive
+        Description = "Input a valid token to access this API"
+    });
+    // Ensure that token is automatically sent as authorization header in requests sent from documentation UI.
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        // OpenApiSecurityRequirement is a dictionary with an OpenApiSecurityScheme as key
+        {
+            new OpenApiSecurityScheme
+            {
+                // we need to reference the OpenApiSecurityScheme we used when we added a security definition
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "CityInfoApiBearerAuth" // this must be the same as the security definition added above
+                }
+            }, 
+            // value of dictionary item is a string list.
+            // this is used when working with tokens and scopes, but we don't have this for basic auth
+            // so we will pass an empty list.
+            new List<string>()
+        }
+    });
 });
 
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();

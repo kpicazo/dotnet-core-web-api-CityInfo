@@ -12,7 +12,7 @@ namespace CityInfo.API.Controllers
     // e.g. requiring a certain type of routing, automatically returning a 400 bad request on bad input,
     // returning problem details on errors, etc.
     [ApiController]
-    //[Authorize]
+    [Authorize]
     //[Route("api/[controller]")] // [controller] refers to the controller's name; in this case "Cities"
     [ApiVersion("1.0")]
     [ApiVersion("2.0")]
