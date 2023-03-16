@@ -67,6 +67,17 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
+// Authorization policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("MustBeFromAntwerp", policy =>
+    {
+        // a policy is made up of a set of requirements
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("city", "Antwerp");
+    });
+});
+
 // Once services are added and/or configured, application can now be built:
 var app = builder.Build();
 
