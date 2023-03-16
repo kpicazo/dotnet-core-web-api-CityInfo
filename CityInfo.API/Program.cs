@@ -1,8 +1,10 @@
+using System.Text;
 using CityInfo.API;
 using CityInfo.API.DbContexts;
 using CityInfo.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 // Configure Serilog
@@ -48,6 +50,23 @@ builder.Services.AddScoped<ICityInfoRepository, CityInfoRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+// Bearer token authentication middleware
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
+    {
+        // configuration to validate token
+        options.TokenValidationParameters = new()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Authentication:Issuer"], // ensures that we only accept tokens created by this issuer (i.e. this API)
+            ValidAudience = builder.Configuration["Authentication:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
+        };
+    });
+
 // Once services are added and/or configured, application can now be built:
 var app = builder.Build();
 
@@ -62,6 +81,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+// Check if request is authenticated before doing everything else
+app.UseAuthentication();
 
 app.UseAuthorization();
 

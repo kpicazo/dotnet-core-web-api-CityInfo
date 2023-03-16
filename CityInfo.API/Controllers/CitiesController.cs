@@ -3,6 +3,7 @@ using CityInfo.API.Models;
 using CityInfo.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CityInfo.API.Controllers
 {
@@ -11,6 +12,7 @@ namespace CityInfo.API.Controllers
     // e.g. requiring a certain type of routing, automatically returning a 400 bad request on bad input,
     // returning problem details on errors, etc.
     [ApiController]
+    [Authorize]
     //[Route("api/[controller]")] // [controller] refers to the controller's name; in this case "Cities"
     [Route("api/cities")]
     public class CitiesController : ControllerBase

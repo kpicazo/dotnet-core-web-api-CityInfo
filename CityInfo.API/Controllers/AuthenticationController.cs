@@ -106,7 +106,7 @@ namespace CityInfo.API.Controllers
                 userName ?? "",
                 "Katherine",
                 "Picazo",
-                "Calgary");
+                "Antwerp");
         }
     }
 }
