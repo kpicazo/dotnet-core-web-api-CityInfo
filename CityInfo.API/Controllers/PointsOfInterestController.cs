@@ -109,29 +109,29 @@ namespace CityInfo.API.Controllers
             );
         }
 
-        //[HttpPut("{pointofinterestid}")]
-        //public ActionResult UpdatePointOfInterest(int cityId, int pointOfInterestId,
-        //    PointOfInterestForUpdateDto pointOfInterest)
-        //{
-        //    // find city
-        //    var city = _citiesDataStore.Cities.FirstOrDefault(c => c.Id == cityId);
-        //    if (city == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPut("{pointofinterestid}")]
+        public async Task<ActionResult> UpdatePointOfInterest(int cityId, int pointOfInterestId,
+            PointOfInterestForUpdateDto pointOfInterest)
+        {
+            // check if target city exists
+            if (!await _cityInfoRepository.CityExistsAsync(cityId))
+            {
+                return NotFound();
+            }
 
-        //    // find point of interest
-        //    var pointOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(c => c.Id == pointOfInterestId);
-        //    if (pointOfInterestFromStore == null)
-        //    {
-        //        return NotFound();
-        //    }
+            // find point of interest
+            var pointOfInterestEntity = await _cityInfoRepository.GetPointOfInterestForCityAsync(cityId, pointOfInterestId);
+            if (pointOfInterestEntity == null)
+            {
+                return NotFound();
+            }
 
-        //    pointOfInterestFromStore.Name = pointOfInterest.Name;
-        //    pointOfInterestFromStore.Description = pointOfInterest.Description;
+            // Mapper will update the destination object with values that were passed in the request DTO
+            _mapper.Map(pointOfInterest, pointOfInterestEntity);
+            await _cityInfoRepository.SaveChangesAsync();
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
         //[HttpPatch("{pointofinterestid}")]
         //public ActionResult PartiallyUpdatePointOfInterest(
