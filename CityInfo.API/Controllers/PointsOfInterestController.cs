@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CityInfo.API.Controllers
 {
-    [Route("api/cities/{cityId}/pointsofinterest")]
+    [Route("api/v{version:apiVersion}/cities/{cityId}/pointsofinterest")]
     //[Authorize(Policy = "MustBeFromAntwerp")]
+    [ApiVersion("2.0")]
     [ApiController]
     public class PointsOfInterestController : ControllerBase
     {
@@ -35,13 +36,13 @@ namespace CityInfo.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PointOfInterestDto>>> GetPointsOfInterest(int cityId)
         {
-            var cityName = User.Claims.FirstOrDefault(c => c.Type == "city")?.Value;
-            if (!await _cityInfoRepository.CityNameMatchesCityId(cityName, cityId))
-            {
-                // This returns a 403 status code
-                // i.e. user is authenticated, but doesn't have access 
-                return Forbid();
-            }
+            //var cityName = User.Claims.FirstOrDefault(c => c.Type == "city")?.Value;
+            //if (!await _cityInfoRepository.CityNameMatchesCityId(cityName, cityId))
+            //{
+            //    // This returns a 403 status code
+            //    // i.e. user is authenticated, but doesn't have access 
+            //    return Forbid();
+            //}
 
             // Check if city exists or not.
             // We want to return NotFound if it does not, to differentiate returning an empty list
