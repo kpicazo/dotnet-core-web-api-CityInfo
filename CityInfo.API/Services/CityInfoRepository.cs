@@ -50,5 +50,23 @@ namespace CityInfo.API.Services
                 .Where(p => p.CityId == cityId && p.Id == pointOfInterestId)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest)
+        {
+            var city = await GetCityAsync(cityId, false);
+            if (city != null)
+            {
+                // this only adds to object context (i.e. in-memory representation of the objects); it does not persist to the database yet.
+                // we need to call a save method on the context in order to save to database.
+                city.PointsOfInterest.Add(pointOfInterest);
+            }
+        }
+
+        // This will save data to the actual database
+        public async Task<bool> SaveChangesAsync()
+        {
+            // SaveChangesAsync() will return the amount of entities that have been changed
+            return (await _context.SaveChangesAsync() >= 0);
+        }
     }
 }
